@@ -245,11 +245,24 @@ static void PFUnbindEverythingInViewTree(NSView *view)
 	if ([self p_validateOrder]) {
 		// Make the editing field commit
 		[[self window] makeFirstResponder:nil];
+        
+        // if they have to pay taxes, give them a heads up
+        for (id product in order.lineItems) {
+            if ([product taxForState:[[order billingAddress] state]] != nil) {
+                // tell them
+                NSAlert *taxAlert = [NSAlert alertWithMessageText:[NSString stringWithFormat:@"%@ State Tax", [[order billingAddress] state]] defaultButton:@"Place Order" alternateButton:@"Cancel" otherButton:nil informativeTextWithFormat:@"%@%% will be added to your order for %@ state sales tax.", [product taxForState:[[order billingAddress] state]], [[order billingAddress] state]];
+                if ([taxAlert runModal] == NSAlertAlternateReturn) {
+                    // they don't want to pay taxes. bail.
+                    return;
+                }
+            }
+        }
+                
 
 		[self p_setEnabled:NO toAllControlsInView:[[self window] contentView]];
 
 		[progressSpinner startAnimation:self];
-
+        
 		[order setDelegate:self];
 		[order setSubmitURL:[NSURL URLWithString:[[storeURL absoluteString] stringByAppendingPathComponent:@"order.json"]]];
 		[order submitInBackground];

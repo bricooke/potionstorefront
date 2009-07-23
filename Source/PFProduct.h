@@ -22,6 +22,8 @@
 	NSImage *iconImage;
 	NSString *licenseKey;
 	NSNumber *quantity;
+    
+    NSDictionary *taxes;
 
 	// Checked products get placed into the order
 	NSString *radioGroupName;
@@ -62,6 +64,9 @@
 
 - (NSString *)radioGroupName;
 - (void)setRadioGroupName:(NSString *)value;
+
+- (NSNumber *)taxForState:(NSString *)aStateID;
+- (void)setTaxes:(NSArray *)taxesFromPlist;
 
 @end
 

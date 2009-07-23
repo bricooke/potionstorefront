@@ -34,6 +34,7 @@
 - (id)init
 {
 	[self setQuantity:[NSNumber numberWithInteger:1]];
+    taxes = [[NSDictionary dictionary] retain];
 	return self;
 }
 
@@ -127,6 +128,9 @@ static NSError *ErrorWithObject(id object)
 	[p setName:[dictionary objectForKey:@"name"]];
 	[p setByline:[dictionary objectForKey:@"byline"]];
 	[p setPrice:[dictionary objectForKey:@"price"]];
+    
+    if ([dictionary objectForKey:@"taxes"] != nil)
+        [p setTaxes:[dictionary objectForKey:@"taxes"]];
 
 	// Check for a image path first to see if we can load it from the bundle
 	NSString *iconImagePath = [dictionary objectForKey:@"iconImagePath"];
@@ -196,5 +200,19 @@ static NSError *ErrorWithObject(id object)
 
 - (NSString *)radioGroupName { return radioGroupName; }
 - (void)setRadioGroupName:(NSString *)value { if (radioGroupName != value) { [radioGroupName release]; radioGroupName = [value copy]; } }
+
+- (NSNumber *)taxForState:(NSString *)aStateID { return [taxes valueForKey:aStateID]; }
+- (void)setTaxes:(NSArray *)taxesFromPlist
+{
+    // we receive an array of state/percent dictionaries and turn them
+    // into one dictionary of key = state value = percent
+    NSMutableDictionary *tmpTaxes = [NSMutableDictionary dictionary];
+    for (id aTax in taxesFromPlist) {
+        [tmpTaxes setValue:[aTax valueForKey:@"percent"] forKey:[aTax valueForKey:@"state"]];
+    }
+    
+    [taxes release];
+    taxes = [[NSDictionary dictionaryWithDictionary:tmpTaxes] retain];
+}
 
 @end
