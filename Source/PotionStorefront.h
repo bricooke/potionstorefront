@@ -34,6 +34,12 @@
 
 - (void)setHeaderBackgroundColor:(NSColor *)bgColor andTextColor:(NSColor *)textColor;
 
+- (void)validateLicenseName:(NSString *)name andKey:(NSString *)key;
+
+
+// private 
+- (void) validateLicense:(NSDictionary *)aDict;
+
 @end
 
 
@@ -44,4 +50,8 @@
 
 // Optional -- If you implement this you get the "Unlock with License Key..." button
 - (void)showRegistrationWindow:(id)sender;
+
+// Optional -- Used if you call validateLicenseName:andKey:
+- (void)licenseValidated:(BOOL)response;
+
 @end

@@ -12,7 +12,13 @@
 @interface AppDelegate : NSObject
 {
 	IBOutlet NSWindow *mainWindow;
+    
+    IBOutlet NSTextField *nameTextField;
+    IBOutlet NSTextField *licenseTextField;
+    
+    IBOutlet NSProgressIndicator *spinner;
 }
 
 - (IBAction)buy:(id)sender;
+- (IBAction)validate:(id)sender;
 @end

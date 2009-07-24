@@ -23,4 +23,26 @@
 	[[PotionStorefront sharedStorefront] beginSheetModalForWindow:mainWindow];
 }
 
+
+
+//------------------------------------------------------------------------------
+// validate:
+//------------------------------------------------------------------------------
+- (IBAction) validate:(id)sender
+{
+    [spinner startAnimation:self];
+    
+    [[PotionStorefront sharedStorefront] setDelegate:self];
+	[[PotionStorefront sharedStorefront] setPotionStoreURL:[NSURL URLWithString:@"http://localhost:3000/store"]];
+    [[PotionStorefront sharedStorefront] validateLicenseName:[nameTextField stringValue] andKey:[licenseTextField stringValue]];
+}
+
+
+- (void)licenseValidated:(BOOL)response
+{
+    [spinner stopAnimation:self];
+    
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Validation Response" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"License validation %@", response ? @"succeeded" : @"failed"];
+    [alert runModal];
+}
 @end

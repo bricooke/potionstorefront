@@ -8,6 +8,7 @@
 
 #import "PotionStorefront.h"
 #import "PFStoreWindowController.h"
+#import <JSON/JSON.h>
 
 @implementation PotionStorefront
 
@@ -84,6 +85,55 @@ static PotionStorefront *gStorefront = nil;
 {
     [[PFStoreWindowController sharedController] setHeaderBackgroundColor:bgColor];
     [[PFStoreWindowController sharedController] setHeaderTextColor:textColor];
+}
+
+
+//------------------------------------------------------------------------------
+// validateLicenseName:andKey:
+//------------------------------------------------------------------------------
+- (void) validateLicenseName:(NSString *)name andKey:(NSString *)key
+{
+    // ping their store's validate_license and see if we get a 200 or 404
+    NSDictionary *dict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:name, key, nil] forKeys:[NSArray arrayWithObjects:@"name", @"key", nil]];
+    
+    [NSThread detachNewThreadSelector:@selector(validateLicense:) toTarget:self withObject:dict];
+}
+
+
+
+//------------------------------------------------------------------------------
+// validateLicense:
+//------------------------------------------------------------------------------
+- (void) validateLicense:(NSDictionary *)aDict
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	NSError *error = nil;
+    
+    NSMutableURLRequest *postRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/validate_license", [[self potionStoreURL] absoluteString]]]];
+    NSHTTPURLResponse *response = nil;
+    NSString *json = [aDict JSONRepresentation];
+    
+    if (DEBUG_POTION_STORE_FRONT) {
+        NSLog(@"SENDING JSON: %@", json);
+    }
+    
+    [postRequest setHTTPMethod:@"POST"];
+    [postRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    [postRequest setValue:@"PotionStorefront" forHTTPHeaderField:@"User-Agent"];
+    [postRequest setHTTPBody:[json dataUsingEncoding:NSUTF8StringEncoding]];
+    [postRequest setTimeoutInterval:10.0];
+    
+    BOOL validated = YES;
+    [NSURLConnection sendSynchronousRequest:postRequest returningResponse:&response error:&error];
+    if (error != nil || [response statusCode] != 200) {
+        validated = NO;
+    }
+    
+    if ([[self delegate] respondsToSelector:@selector(licenseValidated:)]) {
+        [[self delegate] licenseValidated:validated];
+    }
+    
+    [pool release];
 }
 
 @end
