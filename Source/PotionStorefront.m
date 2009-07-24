@@ -79,4 +79,11 @@ static PotionStorefront *gStorefront = nil;
 	[storeWindow makeFirstResponder:nil];
 }
 
+
+- (void)setHeaderBackgroundColor:(NSColor *)bgColor andTextColor:(NSColor *)textColor
+{
+    [[PFStoreWindowController sharedController] setHeaderBackgroundColor:bgColor];
+    [[PFStoreWindowController sharedController] setHeaderTextColor:textColor];
+}
+
 @end

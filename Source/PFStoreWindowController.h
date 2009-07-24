@@ -114,6 +114,10 @@ enum {
 - (IBAction)openWebStore:(id)sender;
 - (IBAction)showRegistrationWindow:(id)sender;
 
+// Display settings
+- (void) setHeaderBackgroundColor:(NSColor *)aColor;
+- (void) setHeaderTextColor:(NSColor *)aColor;
+
 // Private
 - (NSInteger)p_countOfAddresses;
 - (void)p_setupAddressPopUpButton;

@@ -487,6 +487,24 @@ static void PFUnbindEverythingInViewTree(NSView *view)
 	[paypalOrGoogleCheckoutButton sizeToFit];
 }
 
+
+#pragma mark -
+#pragma mark Display settings
+- (void) setHeaderBackgroundColor:(NSColor *)aColor
+{
+    [headerView setBackgroundColor:aColor];
+}
+
+- (void) setHeaderTextColor:(NSColor *)aColor
+{
+    [headerStepsField setTextColor:aColor];
+    NSMutableAttributedString *as = [[[headerTitleField attributedStringValue] mutableCopy] autorelease];
+    [as setAttributes:[NSDictionary dictionaryWithObject:aColor forKey:NSForegroundColorAttributeName]  range:NSMakeRange(0, [as length])];
+	[headerTitleField setAttributedStringValue:as];
+    
+}
+
+
 #pragma mark -
 #pragma mark Private
 

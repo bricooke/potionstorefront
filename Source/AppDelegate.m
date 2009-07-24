@@ -18,6 +18,8 @@
 	[[PotionStorefront sharedStorefront] setPotionStoreURL:[NSURL URLWithString:@"http://localhost:3000/store"]];
 	[[PotionStorefront sharedStorefront] setProductsPlistURL:[NSURL URLWithString:@"http://getconcentrating.com/c8_storefront_products.plist"]];
 	[[PotionStorefront sharedStorefront] setWebStoreSupportsPayPal:YES googleCheckout:YES];
+    [[PotionStorefront sharedStorefront] setHeaderBackgroundColor:[NSColor redColor] andTextColor:[NSColor blueColor]];
+    
 	[[PotionStorefront sharedStorefront] beginSheetModalForWindow:mainWindow];
 }
 

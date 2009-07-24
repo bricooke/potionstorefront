@@ -32,6 +32,8 @@
 
 - (void)beginSheetModalForWindow:(NSWindow *)window;
 
+- (void)setHeaderBackgroundColor:(NSColor *)bgColor andTextColor:(NSColor *)textColor;
+
 @end
 
 
