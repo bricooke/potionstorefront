@@ -300,7 +300,7 @@ static void PFUnbindEverythingInViewTree(NSView *view)
 
 - (IBAction)openWebStore:(id)sender
 {
-	[[NSWorkspace sharedWorkspace] openURL:storeURL];
+	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"/?product=C8_100&payment_type=paypal" relativeToURL:storeURL]];
 }
 
 - (IBAction)showRegistrationWindow:(id)sender
