@@ -35,6 +35,7 @@
 - (void)setHeaderBackgroundColor:(NSColor *)bgColor andTextColor:(NSColor *)textColor;
 
 - (void)validateLicenseName:(NSString *)name andKey:(NSString *)key;
+- (void)validateLicenseName:(NSString *)name andKey:(NSString *)key withExtras:(NSDictionary *)theExtras;
 
 
 // private 

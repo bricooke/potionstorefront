@@ -93,8 +93,19 @@ static PotionStorefront *gStorefront = nil;
 //------------------------------------------------------------------------------
 - (void) validateLicenseName:(NSString *)name andKey:(NSString *)key
 {
+    [self validateLicenseName:name andKey:key withExtras:[NSDictionary dictionary]];
+}
+
+
+
+//------------------------------------------------------------------------------
+// validateLicenseName:andKey:withExtras:
+//------------------------------------------------------------------------------
+- (void)validateLicenseName:(NSString *)name andKey:(NSString *)key withExtras:(NSDictionary *)theExtras
+{
     // ping their store's validate_license and see if we get a 200 or 404
-    NSDictionary *dict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:name, key, nil] forKeys:[NSArray arrayWithObjects:@"name", @"key", nil]];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjects:[NSArray arrayWithObjects:name, key, nil] forKeys:[NSArray arrayWithObjects:@"name", @"key", nil]];
+    [dict addEntriesFromDictionary:theExtras];
     
     [NSThread detachNewThreadSelector:@selector(validateLicense:) toTarget:self withObject:dict];
 }
